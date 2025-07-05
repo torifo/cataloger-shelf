@@ -33,4 +33,33 @@ class OpusController extends Controller
         // 作成したデータをJSON形式で返し、ステータスコード201 (Created) を設定
         return response()->json($opus, 201);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Opus $opus)
+    {
+        // 簡単なバリデーション
+        $validated = $request->validate([
+            'title' => 'string|max:255',
+        ]);
+
+        // 受け取ったデータでレコードを更新
+        $opus->update($request->all());
+
+        // 更新後のデータをJSONで返す
+        return response()->json($opus);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Opus $opus)
+    {
+        // レコードを削除
+        $opus->delete();
+
+        // 成功したことを示す「204 No Content」レスポンスを返す
+        return response()->noContent();
+    }
 }
