@@ -10,3 +10,8 @@ Thumbs.db
 # IDE settings
 .idea/
 .vscode/
+
+# Environment files (contains sensitive information)
+.env.local
+.env
+*.env

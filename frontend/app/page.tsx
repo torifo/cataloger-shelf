@@ -1,5 +1,8 @@
 import Link from 'next/link'; // Linkコンポーネントをインポート
 
+// このページを動的レンダリングに設定（ビルド時の静的生成を無効化）
+export const dynamic = 'force-dynamic';
+
 // Opusのデータ型を定義します。
 type Opus = {
   id: number;

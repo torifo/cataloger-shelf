@@ -1,0 +1,34 @@
+# ---- ビルドステージ (Builder Stage) ----
+# 依存関係のインストールやアセットのビルドを行う
+FROM php:8.2-fpm-alpine AS builder
+
+RUN apk update && apk add --no-cache \
+      build-base libzip-dev zip curl nodejs npm mysql-client
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+COPY backend/composer.json backend/composer.lock ./
+RUN composer install --optimize-autoloader --no-dev --no-scripts
+
+COPY backend/ .
+
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
+
+# ---- 本番ステージ (Production Stage) ----
+# 実行に必要な最小限のファイルだけをコピーする
+FROM php:8.2-fpm-alpine
+
+RUN apk update && apk add --no-cache libzip mysql-client
+
+WORKDIR /app
+
+COPY --from=builder /app .
+
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+
+EXPOSE 9000
+CMD ["php-fpm"]

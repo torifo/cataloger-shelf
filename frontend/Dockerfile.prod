@@ -1,0 +1,20 @@
+# ---- ビルドステージ (Builder Stage) ----
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# ---- 本番ステージ (Production Stage) ----
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+# ポートを3003に変更
+EXPOSE 3003
+# 起動コマンドでポート3003を指定
+CMD ["next", "start", "-p", "3003"]

@@ -12,8 +12,8 @@ export default function NewOpusPage() {
   const [category, setCategory] = useState('book');
   const [subCategory, setSubCategory] = useState('');
   const [status, setStatus] = useState('planned');
-  const [rating, setRating] = useState('');
-  const [review, setReview] = useState('');
+  const [rating] = useState('');
+  const [review] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,8 +54,8 @@ export default function NewOpusPage() {
       router.push('/');
       router.refresh(); // サーバーのデータを再取得させる
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'エラーが発生しました');
     } finally {
       setIsSubmitting(false);
     }
