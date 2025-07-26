@@ -210,3 +210,25 @@ sudo docker compose run --rm app php artisan migrate --force
 
 # 4. 起動！
 sudo docker compose up -d
+
+
+---
+
+## デプロイ状況 (2025年7月26日時点)
+
+### プロダクションリポジトリ設定完了
+- **プロダクションリポジトリ**: `https://github.com/torifo/cataloger-shelf.git`
+- **標準ブランチ**: `main` (releaseブランチから作成済み)
+- **リモート設定**: `production` remote が設定済み
+
+### 今後のデプロイワークフロー
+1. 開発環境でreleaseブランチに変更をプッシュ
+2. プロダクションリポジトリにデプロイする際は以下のコマンドを実行：
+   ```bash
+   git push production release:main
+   ```
+3. VPS側で最新イメージをプルして再起動
+
+### 本番用Dockerfileの状況
+- ✅ `docker/php/Dockerfile.prod` - バックエンド用本番Dockerfile作成済み
+- ✅ `frontend/Dockerfile.prod` - フロントエンド用本番Dockerfile作成済み
