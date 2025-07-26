@@ -196,7 +196,22 @@ DB_PASSWORD=YOUR_STRONG_DB_PASSWORD # 上記と同じパスワード
 
 ---
 
-### ステップ3：アプリケーションの起動
+### ステップ3：本番環境のドメイン設定
+
+#### 本番環境のURL設定
+- **フロントエンド**: `https://cataloger-shelf.opus.riumu.net`
+- **バックエンドAPI**: `https://api.sheloger.opus.riumu.net`
+
+#### フロントエンドの環境変数設定
+フロントエンドアプリケーション内でバックエンドAPIを呼び出す設定を確認してください：
+```javascript
+// フロントエンドでのAPI呼び出し例
+const API_BASE_URL = 'https://api.sheloger.opus.riumu.net/api';
+```
+
+---
+
+### ステップ4：アプリケーションの起動
 
 ```sh
 # 1. GHCRから最新のイメージを取得

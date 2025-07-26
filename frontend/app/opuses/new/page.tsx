@@ -27,7 +27,11 @@ export default function NewOpusPage() {
     setError(null);
 
     try {
-      const res = await fetch('http://localhost:8080/api/opuses', {
+      // 本番環境とローカル環境を自動判定
+      const API_BASE_URL = process.env.NODE_ENV === 'production'
+        ? 'https://api.sheloger.opus.riumu.net/api'
+        : 'http://localhost:8080/api';
+      const res = await fetch(`${API_BASE_URL}/opuses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
