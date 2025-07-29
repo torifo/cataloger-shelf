@@ -17,4 +17,4 @@ COPY --from=builder /app/package.json ./package.json
 # ポートを3003に変更
 EXPOSE 3003
 # 起動コマンドでポート3003を指定
-CMD ["next", "start", "-p", "3003"]
+CMD ["npx", "next", "start", "-p", "3003"]

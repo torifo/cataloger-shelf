@@ -19,16 +19,26 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        'https://cataloger-shelf.opus.riumu.net',
+        'http://localhost:3000', // 開発環境用
+        'http://localhost:3003', // 開発環境用
+    ],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => [
+        'Accept',
+        'Authorization',
+        'Content-Type',
+        'X-Requested-With',
+        'X-CSRF-TOKEN',
+    ],
 
     'exposed_headers' => [],
 
-    'max_age' => 0,
+    'max_age' => 86400,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

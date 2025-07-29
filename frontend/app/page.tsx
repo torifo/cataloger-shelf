@@ -21,9 +21,7 @@ type Opus = {
 async function getOpuses(): Promise<Opus[]> {
   try {
     // 本番環境とローカル環境を自動判定
-    const API_BASE_URL = process.env.NODE_ENV === 'production'
-      ? 'https://api.sheloger.opus.riumu.net/api'
-      : 'http://localhost:8080/api';
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
     const res = await fetch(`${API_BASE_URL}/opuses`, { cache: 'no-store' });
     if (!res.ok) {
       throw new Error('APIからのデータ取得に失敗しました。');

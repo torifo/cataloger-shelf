@@ -5,6 +5,8 @@ FROM php:8.2-fpm-alpine AS builder
 RUN apk update && apk add --no-cache \
       build-base libzip-dev zip curl nodejs npm mysql-client
 
+RUN docker-php-ext-install pdo pdo_mysql zip
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
@@ -22,7 +24,9 @@ RUN php artisan config:cache && \
 # 実行に必要な最小限のファイルだけをコピーする
 FROM php:8.2-fpm-alpine
 
-RUN apk update && apk add --no-cache libzip mysql-client
+RUN apk update && apk add --no-cache libzip libzip-dev mysql-client
+
+RUN docker-php-ext-install pdo pdo_mysql zip
 
 WORKDIR /app
 
@@ -31,4 +35,16 @@ COPY --from=builder /app .
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 EXPOSE 9000
-CMD ["php-fpm"]
+
+# 起動時にファイルを共有ボリュームにコピーするスクリプトを作成
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'if [ ! -f /shared/public/index.php ]; then' >> /entrypoint.sh && \
+    echo '  echo "Copying application files to shared volume..."' >> /entrypoint.sh && \
+    echo '  cp -r /app/* /shared/' >> /entrypoint.sh && \
+    echo '  chown -R www-data:www-data /shared/storage /shared/bootstrap/cache' >> /entrypoint.sh && \
+    echo 'fi' >> /entrypoint.sh && \
+    echo 'cd /shared' >> /entrypoint.sh && \
+    echo 'exec php-fpm' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

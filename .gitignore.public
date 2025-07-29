@@ -60,7 +60,7 @@ tmp/
 temp/
 .tmp/
 
-# Production secrets (exclude from public repo)
+# Production secrets (EXCLUDE FROM PUBLIC REPO)
 docker-compose.prod.yml
 backend/public/test-db.php
 
@@ -77,3 +77,6 @@ backend/public/test-db.php
 # System files
 .system/
 .config/
+
+# Development-only files
+TROUBLESHOOTING.md
